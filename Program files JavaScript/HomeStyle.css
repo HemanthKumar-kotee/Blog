@@ -1,0 +1,74 @@
+
+.Left-Half {
+    
+    background-color: #0d1a1a;
+    height: 100vh;
+    
+}
+
+.Right-Half{
+    
+    background-color: whitesmoke;
+    height: 100vh;
+}
+
+.Main {
+
+    margin-left: 8%;
+    margin-right: 8%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    
+} 
+
+.Home-title{
+    margin-left: 5%;
+    margin-top: 5%;
+    text-align: left;
+    font-family: sans-serif;
+    font-size: xx-large;
+    color: white;
+    font-weight: bolder;
+}
+
+.About-blog{
+    width: 50%;
+    height: 20vh;
+    margin: 20%;
+    color: white;
+    font-size: small;
+    border :2px solid white;
+    font-family: sans-serif;
+}
+
+
+.signup-button {
+
+    margin-top: 10%;
+    color:#5b8c7c;
+    background-color: white;
+    width: 30%;
+    height: 5vh;
+    align-self:self-end;
+    margin-left: 10%;
+    cursor: pointer;
+}
+
+.Login-button {
+
+    cursor: pointer;
+    margin-top: 10%;
+    width: 30%;
+    height: 5vh;
+    text-align: center;
+    justify-content: center;
+    color:white;
+    background-color: #0d1a1a;
+    border-radius: 50px;
+    margin-left: 10%;
+}
+.Tree-image{
+
+    width: 100%;
+    height: 85vh;
+}
