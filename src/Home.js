@@ -1,12 +1,11 @@
-if (window.location.pathname !='./Home.html'){
+document.addEventListener('DOMContentLoaded', function() {
+    
+    const getStart =document.getElementById("getStart");
 
-    return;
-}
+//Linked to the main page of the blog 
 
-const getStart =document.getElementById("getStarted");
+    getStart.addEventListener("click", function () {
 
-
-getStart.addEventListener("click" ,function(){
-
-    window.location.href ='code.html';
+            window.location.href = '../public/code.html';
+        });
 });

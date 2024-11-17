@@ -46,7 +46,7 @@
     display: inline-flex;
 }
 
-.Add-blog button{
+#Add-blog  {
     padding: 1%;
     background-color: #0d1a1a;
     width: 25%;
@@ -60,6 +60,9 @@
     margin-left: 15%;
     cursor: pointer;
     
+}
+#Add-blog:hover{
+    transform: scale(1.2);
 }
 .recentskeleton{
 

@@ -1,0 +1,44 @@
+.Main {
+
+    margin-left: 10%;
+    margin-right: 10%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    
+} 
+
+.Home-title{
+    margin-left: 20%;
+    margin-top: 10%;
+    text-align: left;
+    font-family: sans-serif;
+    font-size: xx-large;
+    color: #0d1a1a;
+    font-weight: bolder;
+}
+
+.About-blog{
+    width: 50%;
+    height: 20vh;
+    margin: 20%;
+    color: #0d1a1a;
+    font-size: medium;
+    border :2px solid black;
+    font-family: sans-serif;
+}
+#getStart {
+
+    cursor: pointer;
+    margin-top: 10%;
+    width: 30%;
+    height: 5vh;
+    text-align: center;
+    justify-content: center;
+    color:white;
+    background-color: #0d1a1a;
+    border-radius: 50px;
+    margin-left: 10%;
+}
+#getStart:hover{
+    transform: scale(1.2);
+}

@@ -1,41 +1,47 @@
-const express =require('express') ;
+const dataBaseUser= 'postgres';
+
+const password = 'In 21 feb 2005';
+const express =require('express');
 const bodyParser =require('body-parser');
-const port=3000;
+
+const port=5500;
 
 const app= express();
 const { Pool } = require('pg');
 
+const default_port =5432 ;
 const postGreConfig = {
-  user: 'postgres',
+  user: dataBaseUser,
   host: 'localhost',
   database: 'postgres',
-  password: 'In 21 feb 2005',
-  port: 5432,
+  password: password,
+  port:default_port,
 };
 
 const pool = new Pool(postGreConfig);
 
 // Middleware to parse JSON bodies 
-app.use(express.json()) ;
+app.use(bodyParser.json()) ;
 
-app.get('/blog' ,async (req, res) => {
+app.get('/api/fetchText' ,async (req, res) => {
   try {
-    let TotalBlogs = await pool.query('SELECT COUNT(*) FROM Post') ;
+    let TotalBlogs = await pool.query('SELECT COUNT(*) FROM Post');
 
-    if (TotalBlogs < 4 ){
-      
-      const result =await pool.query('SELECT blog FROM Post') ;
+    if (TotalBlogs < 4) {  
+      const result =await pool.query('SELECT blog FROM Post LIMIT ${TotalBlogs}') ;
 
-      res.json(result.rows.blog) ;
-      
+      res.json(result.rows.blog);
+
     }
     else {
     const result = await pool.query('SELECT DISTINCT blog FROM Post ORDER BY RANDOM() LIMIT 4 ') ; 
     
     res.json(result.rows.blog);  
     }
+
   } catch (error) {
     console.error('Error in executing query', error);
+
 
     res.status(500).send('Internal Server Error');
   }
@@ -51,12 +57,12 @@ app.post('/api/message', async (req, res) =>{
 
     try {
       const result= await pool.query(
-        'INSERT INTO Post (blog) VALUES ($blog)',
+        'INSERT INTO Post (blog) VALUES ($1)',
         [blog]
       );
 
       
-      res.json(result.rows.blog);
+      res.status(200).send('Blog Inserted Successfully ');
 
     } catch (error) {
     
@@ -69,4 +75,4 @@ app.post('/api/message', async (req, res) =>{
 app.listen(port, ()=>{
 
     console.log ('Server is running on port: ',port);
-})
+});

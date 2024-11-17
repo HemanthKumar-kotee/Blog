@@ -1,44 +1,34 @@
+document.addEventListener('DOMContentLoaded', function() {
 
- if (window.location.pathname!=="./Create_Blog.html"){
+    // Blog JS is used to handle the blogs that are created by the user 
 
-    console.log("Error Wrong HTML file is rendered! ") ;
-    return ;
-}
-// Blog JS is used to handle the blogs that are created by the user 
+    const blogInput =document.getElementsByClassName('Newblog');
+    const post = document.getElementById('post');
 
-const blogInput =document.getElementsByClassName("Newblog");
-const post = document.getElementById('post');
+    post.addEventListener("click", async (event) =>{
+        event.preventDefault() ;
 
-post.addEventListener("click", () =>{
-    
-
-    const blog =blogInput.value.trim();
-    try {
-       if (blog) { 
-        fetch('/api/message', {
-            method: 'POST',
-            headers: {
-                'Content-Type': '/application/json',
-            },
-            body: blog ,
-
-        });
-        if (response.ok) {
-
-            let data = response.json();
-            console.log('Message Created successfully') ;
-
-            console.log(data) ;
+        const blog = blogInput.value;
+        try {
         
-            window.location.href = 'code.html' ;
-        }else {
-            
-            console.log('Error', response.text()) ;
-            }
-        }
+        const response =  await fetch('/api/message', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': '/application/json',
+                },
+                body: JSON.stringify({ blog }),
 
-    }
-    catch (error){
-        console.log( 'Error submitting the message'+ error);
-    }    
-});
+            });
+
+            const result =await response.json();
+            console.log(result) ;
+            
+            alert(result);
+            }         
+
+        catch (error){
+            console.log( 'Error submitting the message'+ error);
+        }
+    });
+
+});   

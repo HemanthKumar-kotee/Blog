@@ -1,54 +1,46 @@
+document.addEventListener('DOMContentLoaded' ,function() {
 
+    const create_blog =document.getElementById("Add-blog");
+    
+    // The main page of the blog application used to show the blogs to the user 
+    /*
+    Main JavaScript file used to handle the event listener to 
 
-const create_blog =document.getElementById("createblog");
-const blog_id =document.getElementById("blog-id") ;
+        make reliable to the user of the blog application
+    */ 
 
-// The main page of the blog application used to show the blogs to the user 
-/*
-blog_id.addEventListener("click", 
-    async ()=>{
+    create_blog.addEventListener("click", ()=>{
 
-    window.location.href= "blogs.html";
-});*/
+        window.location.href = '../public/Create_Blog.html';
 
-/*
-Main JavaScript file used to handle the event listener to 
+    });
 
-    make reliable to the user of the blog application
+    async function fetchAndDisplayText(){
 
-*/ 
+        try{
+            const response = await fetch('/api/fetchText');
+            if (response.ok) {
+                const blogs = await response.json();
+                const blogDisplay = document.getElementsByClassName('recentskeleton');
+                blogDisplay.innerHTML = '';
 
-create_blog.addEventListener("click", 
-    ()=>{
+                blogs.forEach(blog => {
+                    const blogElement = document.createElement('div');
+                    blogElement.textContent = blog;
+                    blogDisplay.appendChild(blogElement);
 
-    window.location.href = 'Create_Blog.html';
+                });
 
-});
+            } else {
 
-async function loadMessages(){
-    try {
-        const response =fetch('/api/message') ;
-        if (!response.ok) {
+                console.error('Failed to fetch  texts.')
+            }
 
-            throw new Error('Failed to load message') ;
         }
-        const messages = response.json();
-        const messageList = document.getElementById('skeleton');
-    
-        messagesList.innerHTML= '';
+        catch (error) {
+            console.error('Unable to fetch data from the server! ',error);
+        }
+    }   
 
-        messages.forEach(message => {
-            const listItem = document.createElement('li');
-            listItem.textContent = message.message;
-        // Assuming the table has a column 'message'
-        
-        messageList.appendChild(listItem);
-        })
-    } catch (error) {
-
-        console.log('Error ', error) ;
-    }
-    
-window.onload =loadMessages();
-  
-}
+    fetchAndDisplayText();
+});
