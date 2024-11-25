@@ -3,8 +3,9 @@ const dataBaseUser= 'postgres';
 const password = 'In 21 feb 2005';
 const express =require('express');
 const bodyParser =require('body-parser');
+const path = require('path');
 
-const port=5500;
+const port= 3000;
 
 const app= express();
 const { Pool } = require('pg');
@@ -20,8 +21,24 @@ const postGreConfig = {
 
 const pool = new Pool(postGreConfig);
 
+app.use(bodyParser.urlencoded({ extended: true }))
+
 // Middleware to parse JSON bodies 
 app.use(bodyParser.json()) ;
+
+// app.use(function(req, res, next) {
+//   res.setHeader('Access-Control-Allow-Origin', '*');
+//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+//   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+//   res.setHeader('Access-Control-Allow-Credentials', true);
+//   next();
+// });
+
+app.use(express.static(__dirname+'/public'));
+
+app.get('/',(req,res) =>{
+  res.sendFile(path.join(__dirname,"public","Blog.html"));
+});
 
 app.get('/api/fetchText' ,async (req, res) => {
   try {
@@ -33,10 +50,13 @@ app.get('/api/fetchText' ,async (req, res) => {
       res.json(result.rows.blog);
 
     }
-    else {
-    const result = await pool.query('SELECT DISTINCT blog FROM Post ORDER BY RANDOM() LIMIT 4 ') ; 
+    else if (TotalBlogs >4){
+    const result =await pool.query('SELECT DISTINCT blog FROM Post LIMIT 4 ') ; 
     
     res.json(result.rows.blog);  
+    }
+    else if(TotalBlogs ==4){
+      const result = await pool.query('SELECT blog FROM Post');
     }
 
   } catch (error) {
@@ -49,7 +69,8 @@ app.get('/api/fetchText' ,async (req, res) => {
 });
 
 app.post('/api/message', async (req, res) =>{
-    const { blog } =req.body;
+  const { blog } =req.body;
+  
 
     if (!blog || blog.length >140){
       return res.status(400).send('Blog should not be empty and not more than 140 Characters '); 
@@ -62,7 +83,7 @@ app.post('/api/message', async (req, res) =>{
       );
 
       
-      res.status(200).send('Blog Inserted Successfully ');
+      res.status(200).send('Blog Inserted Successfully' );
 
     } catch (error) {
     

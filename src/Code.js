@@ -11,16 +11,18 @@ document.addEventListener('DOMContentLoaded' ,function() {
 
     create_blog.addEventListener("click", ()=>{
 
-        window.location.href = '../public/Create_Blog.html';
+        window.location.href = '../public/Blog.html';
 
     });
 
     async function fetchAndDisplayText(){
 
         try{
-            const response = await fetch('/api/fetchText');
+            const response = await fetch('http://localhost:3000/api/fetchText');
             if (response.ok) {
-                const blogs = await response.json();
+                const responseJson = await response.json();
+
+                const blogs = response.text();
                 const blogDisplay = document.getElementsByClassName('recentskeleton');
                 blogDisplay.innerHTML = '';
 
