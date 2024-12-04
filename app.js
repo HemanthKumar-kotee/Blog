@@ -34,35 +34,54 @@ app.use(bodyParser.json()) ;
 //   next();
 // });
 
-app.use(express.static(__dirname+'/public'));
+app.use(express.static(__dirname +'/public'));
 
 app.get('/',(req,res) =>{
-  res.sendFile(path.join(__dirname,"public","Blog.html"));
+
+  res.sendFile(path.join(__dirname,"public","Home.html"));
 });
+
+
+app.get('/main', (req,res) =>{
+
+   res.sendFile(path.join(__dirname,"public","code.html"));
+ });
+
+app.get('/blog', (req,res) =>{
+  res.sendFile(path.join(__dirname, "public","Blog.html"));
+
+});
+
 
 app.get('/api/fetchText' ,async (req, res) => {
   try {
-    let TotalBlogs = await pool.query('SELECT COUNT(*) FROM Post');
 
+    const metaData = await pool.query('SELECT COUNT(*) AS blog FROM Post');
+    
+    TotalBlogs = metaData.rows[0].blog;
+  
     if (TotalBlogs < 4) {  
       const result =await pool.query('SELECT blog FROM Post LIMIT ${TotalBlogs}') ;
 
-      res.json(result.rows.blog);
-
+      res.json(result.rows.map(row => row.blog));
+      
     }
-    else if (TotalBlogs >4){
-    const result =await pool.query('SELECT DISTINCT blog FROM Post LIMIT 4 ') ; 
-    
-    res.json(result.rows.blog);  
-    }
+    if (TotalBlogs >4){
+      const result =await pool.query('SELECT DISTINCT blog FROM Post LIMIT 4 ') ; 
+      
+      console.log(result.rows.map(row => row.blog));
+      res.json(result.rows.map(row => {row.blog}));  
+      
+      }
     else if(TotalBlogs ==4){
       const result = await pool.query('SELECT blog FROM Post');
+      res.json(result.rows.map(row => {row.blog}));
+      
     }
+    
 
   } catch (error) {
     console.error('Error in executing query', error);
-
-
     res.status(500).send('Internal Server Error');
   }
 
