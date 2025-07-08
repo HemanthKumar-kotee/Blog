@@ -1,6 +1,4 @@
-const dataBaseUser= 'postgres';
 
-const password = 'In 21 feb 2005';
 const express =require('express');
 const bodyParser =require('body-parser');
 const path = require('path');
