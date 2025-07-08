@@ -26,7 +26,6 @@ document.addEventListener('DOMContentLoaded', function() {
         //     const result =await response.json();
         //     console.log(result) ;
             
-        //     alert(result);    
         
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/x-www-form-urlencoded");

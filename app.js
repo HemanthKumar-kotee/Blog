@@ -1,6 +1,6 @@
-const dataBaseUser= 'DB name';
+const dataBaseUser= 'postgres';
 
-const password = 'Your_Password';
+const password = 'In 21 feb 2005';
 const express =require('express');
 const bodyParser =require('body-parser');
 const path = require('path');
@@ -21,18 +21,23 @@ const postGreConfig = {
 
 const pool = new Pool(postGreConfig);
 
+pool.connect().then(() => {
+  const query = 'CREATE TABLE IF NOT EXISTS post (s_no SERIAL PRIMARY KEY, blog VARCHAR(150) NOT NULL,time_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP);';
+  return pool.query(query);
+}).then(() => {
+  console.log('Table created successfully ');
+  
+})
+.catch(err => {
+  console.error('Error in executing query ', err.stack);
+  pool.end();
+});
+
 app.use(bodyParser.urlencoded({ extended: true }))
 
 // Middleware to parse JSON bodies 
 app.use(bodyParser.json()) ;
 
-// app.use(function(req, res, next) {
-//   res.setHeader('Access-Control-Allow-Origin', '*');
-//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-//   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-//   res.setHeader('Access-Control-Allow-Credentials', true);
-//   next();
-// });
 app.use(express.static(__dirname +'/public'));
 
 app.use('/src', express.static(__dirname+'/src'));
@@ -88,7 +93,7 @@ app.get('/api/fetchText' ,async (req, res) => {
 });
 
 app.post('/api/message', async (req, res) =>{
-  const { blog } =req.body;
+    const { blog } =req.body;
   
 
     if (!blog || blog.length >140){
